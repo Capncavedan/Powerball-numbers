@@ -2,7 +2,9 @@
 
 ### Simple analysis of Powerball lottery number stats, using Ruby's Enumerable.
 
-Pulls from "today" back to the beginning of the Powerball epoch (1 Nov 1997) and tabulates the most popular numbers.
+http://www.powerball.com
+
+Pulls from "today" back to the beginning of the Powerball lottery epoch (1 Nov 1997) and tabulates the most popular numbers.
 
 Requires the hpricot gem.  Running in 1.9.3
 
