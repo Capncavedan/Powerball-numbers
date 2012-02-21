@@ -4,7 +4,7 @@ require 'hpricot'
 require 'date'
 
 module Enumerable
-  # with a big nod to Alex D who posted at StackOverflow
+  # with a nod to Alex D who posted at StackOverflow
   # http://stackoverflow.com/questions/9127971/sort-array-by-popularity-and-time-in-ruby
   def to_histogram
     result = Hash.new(0)
@@ -48,3 +48,26 @@ end
 puts "Examining results of #{powerballs.count} drawings..."
 puts "Top 5 numbers: #{white_balls.most_popular_n(5).join(', ')}"
 puts "Top Powerball: #{powerballs.most_popular}"
+
+puts
+puts "Detail:"
+
+puts
+puts "Regular numbers"
+puts "=================="
+puts "Number       Draws"
+puts "------       -----"
+white_balls.most_popular_n(white_balls.uniq.size).each do |num|
+  puts "#{num.to_s.rjust(6)}#{' '*7}#{white_balls.count(num).to_s.rjust(5)}"
+end
+
+puts
+puts "Powerballs"
+puts "=================="
+puts "Powerball    Draws"
+puts "---------    -----"
+powerballs.most_popular_n(powerballs.uniq.size).each do |num|
+  puts "#{num.to_s.rjust(9)}#{' '*4}#{powerballs.count(num).to_s.rjust(5)}"
+end
+
+puts
