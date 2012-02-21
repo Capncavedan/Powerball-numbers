@@ -4,15 +4,12 @@ require 'hpricot'
 require 'date'
 
 module Enumerable
+  # with a big nod to Alex D who posted at StackOverflow
+  # http://stackoverflow.com/questions/9127971/sort-array-by-popularity-and-time-in-ruby
   def to_histogram
     result = Hash.new(0)
     each { |x| result[x] += 1 }
     result
-  end
-
-  def most_popular
-    h = self.to_histogram
-    max_by { |x| h[x] }
   end
 
   def most_popular_n(n)
@@ -23,6 +20,10 @@ module Enumerable
       h.delete(ret.last)
     end
     ret
+  end
+
+  def most_popular
+    most_popular_n(1).first
   end
 end
 
