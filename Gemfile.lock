@@ -1,10 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    ascii_charts (0.9.1)
     hpricot (0.8.6)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
+  ascii_charts
   hpricot

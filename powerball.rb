@@ -2,6 +2,7 @@ require 'rubygems'
 require 'open-uri'
 require 'hpricot'
 require 'date'
+require 'ascii_charts'
 
 module Enumerable
   # with a nod to Alex D who posted at StackOverflow
@@ -57,8 +58,11 @@ puts "Regular numbers"
 puts "=================="
 puts "Number       Draws"
 puts "------       -----"
+
+w_results = {}
 white_balls.most_popular_n(white_balls.uniq.size).each do |num|
   puts "#{num.to_s.rjust(6)}#{' '*7}#{white_balls.count(num).to_s.rjust(5)}"
+  w_results[num] = white_balls.count(num)
 end
 
 puts
@@ -66,8 +70,37 @@ puts "Powerballs"
 puts "=================="
 puts "Powerball    Draws"
 puts "---------    -----"
+
+p_results = {}
 powerballs.most_popular_n(powerballs.uniq.size).each do |num|
   puts "#{num.to_s.rjust(9)}#{' '*4}#{powerballs.count(num).to_s.rjust(5)}"
+  p_results[num] = powerballs.count(num)
 end
 
 puts
+puts "White balls Histogram"
+
+results = []
+temp    = []
+w_results.keys.sort.each do |key|
+  temp << key
+  temp << w_results[key]
+  results << temp
+  temp = []
+end
+
+puts AsciiCharts::Cartesian.new(results, :bar => true).draw
+
+puts "Powerballs Histogram"
+
+results = []
+temp    = []
+p_results.keys.sort.each do |key|
+  temp << key
+  temp << p_results[key]
+  results << temp
+  temp = []
+end
+
+puts AsciiCharts::Cartesian.new(results, :bar => true).draw
+
