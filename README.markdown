@@ -8,7 +8,7 @@ Retrieves lottery drawing results from "today" back to the beginning of the Powe
 
 Note the numbers included in the game have expanded over time, so numbers in the 50s appear disproportionately few times.
 
-Requires the hpricot gem.  Runs in 1.9.3; unsure of earlier versions.
+Required gems: `hpricot` and `ascii_charts`.  Runs in 1.9.3; unsure of earlier versions.
 
 ```bash
 ➤ ruby ./powerball.rb
