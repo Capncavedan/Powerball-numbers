@@ -10,3 +10,6 @@ PLATFORMS
 DEPENDENCIES
   ascii_charts
   hpricot
+
+BUNDLED WITH
+   1.11.2
