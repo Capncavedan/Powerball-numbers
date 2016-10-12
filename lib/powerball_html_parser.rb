@@ -11,15 +11,15 @@ class PowerballHtmlParser
   end
 
   def powerballs
-    drawing_rows_search(powerball_cell_identifier).map { |text| text.to_i }
+    @powerballs ||= drawing_rows_search(powerball_cell_identifier).map { |text| text.to_i }
   end
 
   def white_balls
-    drawing_rows_search(white_ball_cell_identifier).map { |text| text.to_i }
+    @white_balls ||= drawing_rows_search(white_ball_cell_identifier).map { |text| text.to_i }
   end
 
   def drawing_dates
-    drawing_rows_search(date_cell_identifier).map { |text| Date.strptime(text, "%m/%d/%Y") }
+    @drawing_dates ||= drawing_rows_search(date_cell_identifier).map { |text| Date.strptime(text, "%m/%d/%Y") }
   end
 
 
