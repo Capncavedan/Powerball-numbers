@@ -22,17 +22,9 @@ RSpec.describe PowerballHtmlParser, type: :class do
 
   describe "instantiation" do
     it "can be instantiated with some HTML" do
-      html = "<html></html>"
       expect {
-        PowerballHtmlParser.new html: html
+        PowerballHtmlParser.new html: sample_drawing_html
       }.to_not raise_error
-    end
-  end
-
-  describe "#drawings" do
-    it "returns an array" do
-      parser = PowerballHtmlParser.new html: "<html></html>"
-      expect(parser.drawings).to eq []
     end
   end
 

@@ -6,10 +6,6 @@ class PowerballHtmlParser
     @html = html
   end
 
-  def drawings
-    []
-  end
-
   def powerballs
     @powerballs ||= drawing_rows_search(powerball_cell_identifier).map { |text| text.to_i }
   end

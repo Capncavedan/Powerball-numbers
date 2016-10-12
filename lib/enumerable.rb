@@ -1,4 +1,5 @@
 module Enumerable
+
   def to_histogram
     result = Hash.new(0)
     each { |x| result[x] += 1 }
@@ -18,4 +19,5 @@ module Enumerable
   def most_popular
     most_popular_n(1).first
   end
+
 end
