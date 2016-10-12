@@ -1,59 +1,24 @@
 require 'rubygems'
-require 'open-uri'
-require 'hpricot'
-require 'date'
 require 'ascii_charts'
 
-module Enumerable
-  # with a nod to Alex D who posted at StackOverflow
-  # http://stackoverflow.com/questions/9127971/sort-array-by-popularity-and-time-in-ruby
-  def to_histogram
-    result = Hash.new(0)
-    each { |x| result[x] += 1 }
-    result
-  end
+require_relative 'lib/enumerable'
+require_relative 'lib/powerball_html_grabber'
+require_relative 'lib/powerball_html_parser'
 
-  def most_popular_n(n)
-    ret = []
-    h = self.to_histogram
-    n.times do
-      ret << max_by { |x| h[x] }
-      h.delete(ret.last)
-    end
-    ret
-  end
 
-  def most_popular
-    most_popular_n(1).first
-  end
-end
+puts "Getting historical Powerball drawing data ..."
+html = PowerballHtmlGrabber.new.html
 
-white_balls = []
-powerballs  = []
+puts "Got #{html.length} bytes of Powerball data. Stand by for parsing."
+parser = PowerballHtmlParser.new(html: html)
 
-end_date   = Date.parse("1 November 1997").strftime("%m/%d/%Y")
-start_date = Date.today.strftime("%m/%d/%Y")
-
-puts "Getting Powerball drawing data from #{start_date} back to #{end_date} ..."
-url = "http://www.powerball.com/powerball/pb_nbr_history.asp?startDate=#{start_date}&endDate=#{end_date}"
-doc = open(url) { |f| Hpricot(f) }
-
-puts "Got #{doc.to_s.length} bytes of Powerball data. Stand by for parsing."
-doc.search("//table[@align='center']/tr[@align='center']").each do |html_table_row|
-  html_table_cells = html_table_row.search("/td")
-  drawing_date = Date.strptime(html_table_cells.first.inner_text, "%m/%d/%Y")
-  white_balls.concat html_table_cells.search("[@background='/images/ball_white_40.gif']").map{ |cell| cell.inner_text.to_i }
-  powerballs << html_table_cells.search("[@background='/images/ball_red_40.gif']").last.inner_text.to_i
-end
-
-puts "Examining results of #{powerballs.count} drawings..."
-
+puts "Examining results of #{parser.powerballs.count} drawings from #{parser.drawing_dates.min} through #{parser.drawing_dates.max}..."
 puts
 puts
 
 puts "====================================="
-puts "Top 5 white balls: #{white_balls.most_popular_n(5).join(', ')}"
-puts "Top Powerball: #{powerballs.most_popular}"
+puts "Top 5 white balls: #{parser.white_balls.most_popular_n(5).join(', ')}"
+puts "Top Powerball: #{parser.powerballs.most_popular}"
 puts "====================================="
 
 puts
@@ -65,9 +30,9 @@ puts "=================="
 puts "Number       Draws"
 puts "------       -----"
 w_results = {}
-white_balls.most_popular_n(white_balls.uniq.size).each do |num|
-  puts "#{num.to_s.rjust(6)}#{' '*7}#{white_balls.count(num).to_s.rjust(5)}"
-  w_results[num] = white_balls.count(num)
+parser.white_balls.most_popular_n(parser.white_balls.uniq.size).each do |num|
+  puts "#{num.to_s.rjust(6)}#{' '*7}#{parser.white_balls.count(num).to_s.rjust(5)}"
+  w_results[num] = parser.white_balls.count(num)
 end
 
 puts
@@ -76,9 +41,9 @@ puts "=================="
 puts "Powerball    Draws"
 puts "---------    -----"
 p_results = {}
-powerballs.most_popular_n(powerballs.uniq.size).each do |num|
-  puts "#{num.to_s.rjust(9)}#{' '*4}#{powerballs.count(num).to_s.rjust(5)}"
-  p_results[num] = powerballs.count(num)
+parser.powerballs.most_popular_n(parser.powerballs.uniq.size).each do |num|
+  puts "#{num.to_s.rjust(9)}#{' '*4}#{parser.powerballs.count(num).to_s.rjust(5)}"
+  p_results[num] = parser.powerballs.count(num)
 end
 
 

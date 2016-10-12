@@ -2,7 +2,21 @@ GEM
   remote: https://rubygems.org/
   specs:
     ascii_charts (0.9.1)
+    diff-lcs (1.2.5)
     hpricot (0.8.6)
+    rspec (3.5.0)
+      rspec-core (~> 3.5.0)
+      rspec-expectations (~> 3.5.0)
+      rspec-mocks (~> 3.5.0)
+    rspec-core (3.5.4)
+      rspec-support (~> 3.5.0)
+    rspec-expectations (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-mocks (3.5.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.5.0)
+    rspec-support (3.5.0)
 
 PLATFORMS
   ruby
@@ -10,6 +24,7 @@ PLATFORMS
 DEPENDENCIES
   ascii_charts
   hpricot
+  rspec
 
 RUBY VERSION
    ruby 2.3.1p112

@@ -10,6 +10,9 @@ Note the numbers included in the game have expanded over time, so numbers in the
 
 Required gems: `hpricot` and `ascii_charts`.  Runs in MRI Ruby 2.3; unsure of earlier versions.
 
+A nod to Alex D who [posted on StackOverflow](http://stackoverflow.com/questions/9127971/sort-array-by-popularity-and-time-in-ruby) with thoughts on sorting arrays by popularity
+
+
 ````bash
 ➜  Powerball-numbers git:(master) ruby ./powerball.rb
 
