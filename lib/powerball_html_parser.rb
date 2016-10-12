@@ -11,23 +11,23 @@ class PowerballHtmlParser
   end
 
   def powerballs
-    [].tap do |powerballs|
-      drawing_rows.each do |drawing_row|
-        powerballs << drawing_row.search(powerball_cell_identifier).last.inner_text.to_i
-      end
-    end
+    drawing_rows_search powerball_cell_identifier
   end
 
   def white_balls
-    [].tap do |white_balls|
-      drawing_rows.each do |drawing_row|
-        white_balls.concat drawing_row.search(white_ball_cell_identifier).map{ |cell| cell.inner_text.to_i }
-      end
-    end
+    drawing_rows_search white_ball_cell_identifier
   end
 
 
   private
+
+  def drawing_rows_search cell_identifier
+    [].tap do |nums|
+      drawing_rows.each do |drawing_row|
+        nums.concat drawing_row.search(cell_identifier).map{ |cell| cell.inner_text.to_i }
+      end
+    end
+  end
 
   def parsed_html
     @parsed_html ||= Hpricot @html
