@@ -4,6 +4,8 @@ require 'hpricot'
 require 'date'
 require 'ascii_charts'
 
+require_relative 'lib/powerball_html_parser'
+
 module Enumerable
   def to_histogram
     result = Hash.new(0)
@@ -26,23 +28,17 @@ module Enumerable
   end
 end
 
-white_balls = []
-powerballs  = []
-
 end_date   = Date.parse("1 November 1997").strftime("%m/%d/%Y")
 start_date = Date.today.strftime("%m/%d/%Y")
 
 puts "Getting Powerball drawing data from #{start_date} back to #{end_date} ..."
 url = "http://www.powerball.com/powerball/pb_nbr_history.asp?startDate=#{start_date}&endDate=#{end_date}"
-doc = open(url) { |f| Hpricot(f) }
+html = open(url).read
+puts "Got #{html.length} bytes of Powerball data. Stand by for parsing."
 
-puts "Got #{doc.to_s.length} bytes of Powerball data. Stand by for parsing."
-doc.search("//table[@align='center']/tr[@align='center']").each do |html_table_row|
-  html_table_cells = html_table_row.search("/td")
-  drawing_date = Date.strptime(html_table_cells.first.inner_text, "%m/%d/%Y")
-  white_balls.concat html_table_cells.search("[@background='/images/ball_white_40.gif']").map{ |cell| cell.inner_text.to_i }
-  powerballs << html_table_cells.search("[@background='/images/ball_red_40.gif']").last.inner_text.to_i
-end
+parser = PowerballHtmlParser.new(html: html)
+white_balls = parser.white_balls
+powerballs  = parser.powerballs
 
 puts "Examining results of #{powerballs.count} drawings..."
 
