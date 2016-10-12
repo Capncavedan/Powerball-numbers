@@ -50,4 +50,11 @@ RSpec.describe PowerballHtmlParser, type: :class do
     end
   end
 
+  describe "#drawing_dates" do
+    it "gets the right result from passed-in HTML" do
+      parser = PowerballHtmlParser.new html: sample_drawing_html
+      expect(parser.drawing_dates).to eq [ Date.parse("2016-10-05") ]
+    end
+  end
+
 end

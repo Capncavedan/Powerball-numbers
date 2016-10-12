@@ -11,20 +11,29 @@ class PowerballHtmlParser
   end
 
   def powerballs
-    drawing_rows_search powerball_cell_identifier
+    drawing_rows_search(powerball_cell_identifier).map { |text| text.to_i }
   end
 
   def white_balls
-    drawing_rows_search white_ball_cell_identifier
+    drawing_rows_search(white_ball_cell_identifier).map { |text| text.to_i }
+  end
+
+  def drawing_dates
+    [].tap do |dates|
+      drawing_rows.each do |drawing_row|
+        dates.concat drawing_rows_search("/td b").map { |text| Date.strptime(text, "%m/%d/%Y") }
+      end
+    end
+
   end
 
 
   private
 
   def drawing_rows_search cell_identifier
-    [].tap do |nums|
+    [].tap do |results|
       drawing_rows.each do |drawing_row|
-        nums.concat drawing_row.search(cell_identifier).map{ |cell| cell.inner_text.to_i }
+        results.concat drawing_row.search(cell_identifier).map{ |cell| cell.inner_text }
       end
     end
   end
