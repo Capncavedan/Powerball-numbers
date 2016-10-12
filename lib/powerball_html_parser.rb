@@ -19,12 +19,7 @@ class PowerballHtmlParser
   end
 
   def drawing_dates
-    [].tap do |dates|
-      drawing_rows.each do |drawing_row|
-        dates.concat drawing_rows_search("/td b").map { |text| Date.strptime(text, "%m/%d/%Y") }
-      end
-    end
-
+    drawing_rows_search(date_cell_identifier).map { |text| Date.strptime(text, "%m/%d/%Y") }
   end
 
 
@@ -52,6 +47,10 @@ class PowerballHtmlParser
 
   def white_ball_cell_identifier
     "/td[@background='/images/ball_white_40.gif']"
+  end
+
+  def date_cell_identifier
+    "/td b"
   end
 
 end
