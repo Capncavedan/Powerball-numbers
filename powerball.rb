@@ -1,23 +1,18 @@
 require 'rubygems'
-require 'open-uri'
 require 'ascii_charts'
 
-require_relative 'lib/powerball_html_parser'
 require_relative 'lib/enumerable'
+require_relative 'lib/powerball_html_grabber'
+require_relative 'lib/powerball_html_parser'
 
 
-end_date   = Date.parse("1 November 1997").strftime("%m/%d/%Y")
-start_date = Date.today.strftime("%m/%d/%Y")
+puts "Getting historical Powerball drawing data ..."
+html = PowerballHtmlGrabber.new.html
 
-puts "Getting Powerball drawing data from #{start_date} back to #{end_date} ..."
-url = "http://www.powerball.com/powerball/pb_nbr_history.asp?startDate=#{start_date}&endDate=#{end_date}"
-html = open(url).read
 puts "Got #{html.length} bytes of Powerball data. Stand by for parsing."
-
 parser = PowerballHtmlParser.new(html: html)
 
-puts "Examining results of #{parser.powerballs.count} drawings..."
-
+puts "Examining results of #{parser.powerballs.count} drawings from #{parser.drawing_dates.min} through #{parser.drawing_dates.max}..."
 puts
 puts
 
