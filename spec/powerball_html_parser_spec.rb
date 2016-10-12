@@ -43,4 +43,11 @@ RSpec.describe PowerballHtmlParser, type: :class do
     end
   end
 
+  describe "#white_balls" do
+    it "gets the right result from passed-in HTML" do
+      parser = PowerballHtmlParser.new html: sample_drawing_html
+      expect(parser.white_balls).to eq [8, 18, 27, 29, 60]
+    end
+  end
+
 end
