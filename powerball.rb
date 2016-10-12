@@ -5,8 +5,6 @@ require 'date'
 require 'ascii_charts'
 
 module Enumerable
-  # with a nod to Alex D who posted at StackOverflow
-  # http://stackoverflow.com/questions/9127971/sort-array-by-popularity-and-time-in-ruby
   def to_histogram
     result = Hash.new(0)
     each { |x| result[x] += 1 }
