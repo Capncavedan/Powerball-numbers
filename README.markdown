@@ -2,7 +2,7 @@
 
 ### Simple analysis of Powerball lottery stats with Enumerable
 
-Lottery info is at http://www.powerball.com
+Lottery info is at [the Powerball website](http://www.powerball.com)
 
 Retrieves lottery drawing results from "today" back to the beginning of the Powerball epoch (1 Nov 1997) and lists the 5 most-often-drawn numbers and most-often-drawn Powerball, in addition to listing how many times each number and each Powerball has been drawn.
 

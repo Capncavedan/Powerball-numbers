@@ -39,26 +39,31 @@ url = "http://www.powerball.com/powerball/pb_nbr_history.asp?startDate=#{start_d
 doc = open(url) { |f| Hpricot(f) }
 
 puts "Got #{doc.to_s.length} bytes of Powerball data. Stand by for parsing."
-doc.search("//table[@align='center']/tr[@align='center']").each do |row|
-  cells = row.search("/td")
-  drawing_date = Date.strptime(cells.first.inner_text, "%m/%d/%Y")
-  white_balls.concat cells.search("[@background='/images/ball_white_40.gif']").map{|c| c.inner_text.to_i}
-  powerballs << cells.search("[@background='/images/ball_red_40.gif']").last.inner_text.to_i
+doc.search("//table[@align='center']/tr[@align='center']").each do |html_table_row|
+  html_table_cells = html_table_row.search("/td")
+  drawing_date = Date.strptime(html_table_cells.first.inner_text, "%m/%d/%Y")
+  white_balls.concat html_table_cells.search("[@background='/images/ball_white_40.gif']").map{ |cell| cell.inner_text.to_i }
+  powerballs << html_table_cells.search("[@background='/images/ball_red_40.gif']").last.inner_text.to_i
 end
 
 puts "Examining results of #{powerballs.count} drawings..."
-puts "Top 5 numbers: #{white_balls.most_popular_n(5).join(', ')}"
+
+puts
+puts
+
+puts "====================================="
+puts "Top 5 white balls: #{white_balls.most_popular_n(5).join(', ')}"
 puts "Top Powerball: #{powerballs.most_popular}"
+puts "====================================="
 
 puts
 puts "Detail:"
 
 puts
-puts "Regular numbers"
+puts "White balls"
 puts "=================="
 puts "Number       Draws"
 puts "------       -----"
-
 w_results = {}
 white_balls.most_popular_n(white_balls.uniq.size).each do |num|
   puts "#{num.to_s.rjust(6)}#{' '*7}#{white_balls.count(num).to_s.rjust(5)}"
@@ -70,37 +75,22 @@ puts "Powerballs"
 puts "=================="
 puts "Powerball    Draws"
 puts "---------    -----"
-
 p_results = {}
 powerballs.most_popular_n(powerballs.uniq.size).each do |num|
   puts "#{num.to_s.rjust(9)}#{' '*4}#{powerballs.count(num).to_s.rjust(5)}"
   p_results[num] = powerballs.count(num)
 end
 
+
 puts
-puts "White balls Histogram"
 
-results = []
-temp    = []
-w_results.keys.sort.each do |key|
-  temp << key
-  temp << w_results[key]
-  results << temp
-  temp = []
-end
 
-puts AsciiCharts::Cartesian.new(results, :bar => true).draw
+puts "White ball histogram"
+white_ball_histogram = w_results.collect{ |key, val| [key, val] }.sort_by{ |arr| arr.first }
+puts AsciiCharts::Cartesian.new(white_ball_histogram, bar: true).draw
 
-puts "Powerballs Histogram"
 
-results = []
-temp    = []
-p_results.keys.sort.each do |key|
-  temp << key
-  temp << p_results[key]
-  results << temp
-  temp = []
-end
-
-puts AsciiCharts::Cartesian.new(results, :bar => true).draw
+puts "Powerball histogram"
+powerball_histogram = p_results.collect{ |key, val| [key, val] }.sort_by{ |arr| arr.first }
+puts AsciiCharts::Cartesian.new(powerball_histogram, bar: true).draw
 
