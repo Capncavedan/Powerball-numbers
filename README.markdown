@@ -1,3 +1,5 @@
+[![Travis CI Build Status](https://travis-ci.org/Capncavedan/Powerball-numbers.svg?branch=master)](https://travis-ci.org/Capncavedan/Powerball-numbers)
+
 # Powerball Numbers
 
 ### Simple analysis of Powerball lottery stats with Enumerable
