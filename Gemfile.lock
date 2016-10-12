@@ -11,5 +11,8 @@ DEPENDENCIES
   ascii_charts
   hpricot
 
+RUBY VERSION
+   ruby 2.3.1p112
+
 BUNDLED WITH
-   1.11.2
+   1.13.2
