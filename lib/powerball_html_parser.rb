@@ -2,24 +2,35 @@ require 'hpricot'
 
 class PowerballHtmlParser
 
-	def initialize html:
-		@html = html
-	end
+  def initialize html:
+    @html = html
+  end
 
-	def drawings
-		[]
-	end
+  def drawings
+    []
+  end
 
-	def powerballs
-		powerballs = []
-		doc = Hpricot(@html)
-		doc.search("//table[@align='center']/tr[@align='center']").each do |html_table_row|
-		  html_table_cells = html_table_row.search("/td")
-		  # drawing_date = Date.strptime(html_table_cells.first.inner_text, "%m/%d/%Y")
-		  # white_balls.concat html_table_cells.search("[@background='/images/ball_white_40.gif']").map{ |cell| cell.inner_text.to_i }
-		  powerballs << html_table_cells.search("[@background='/images/ball_red_40.gif']").last.inner_text.to_i
-		end
-	  powerballs
-	end
+  def powerballs
+    ([]).tap do |powerballs|
+      drawing_rows.each do |drawing_row|
+        powerballs << drawing_row.search(powerball_cell_identifier).last.inner_text.to_i
+      end
+    end
+  end
+
+
+  private
+
+  def parsed_html
+    @parsed_html ||= Hpricot @html
+  end
+
+  def drawing_rows
+    parsed_html.search("//table[@align='center']/tr[@align='center']")
+  end
+
+  def powerball_cell_identifier
+    "/td[@background='/images/ball_red_40.gif']"
+  end
 
 end
